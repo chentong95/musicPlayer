@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		.nav_pic{
+			width:960px;
+			height:250px;
+			margin:100px auto;
+			background:url(img/banner_bg.jpg);
+			position: relative;
+		}
+		.nav_pic img{
+			border-radius: 50%;
+			position: absolute;
+			top:0;
+			left:0;
+		}
+		.nav_pic img.m1{top:32px;left:16px;}
+		.nav_pic img.m2{top:105px;left:150px;}
+		.nav_pic img.m3{top:67px;left:309px;}
+		.nav_pic img.m4{top:32px;left:500px;}
+		.nav_pic img.m5{top:150px;left:490px;}
+		.but{
+			width:560px;
+			height:116px;
+			background:#000;
+			position:fixed;
+			left:0;
+			bottom:50px;
+		}
+		.but .pic{
+			width:90px;
+			height:90px;
+			margin-top:15px;
+			float:left;
+        }
+		.but .text{
+			width:150px;
+			height:90px; 
+			line-height:90px; 
+			color:#fff;
+			float:left;
+			margin-left:10px;
+		}
+		.but .dj{
+			width:150px;
+			height:35px;
+			float:left;
+			margin-top:40px;
+			margin-left:110px;
+		}
+		.but .dj a{
+			float:left;  /*浮动也可以将行内元素转换为块级元素*/
+			margin: 0 10px;
+		}
+		.but .dj a.prev{
+			width:20px;
+			height:35px;
+			background: url(img/player_bg.png) -77px 0px;
+		}
+		.but .dj a.play{
+			width:30px;
+			height:35px;
+			background: url(img/player_bg.png) -113px -3px;
+		}
+		.but .dj a.next{
+			width:20px;
+			height:35px;
+			background: url(img/player_bg.png) -155px 0px;
+		}
+		.but .dj a.pause{
+			width:30px;
+			height:35px;
+			background: url(img/player_bg.png) -300px 108px;
+		}
+		.but .close{
+			width: 23px;
+			height:116px;
+			background: url(img/player_bg.png);
+			float:right;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="nav_pic">
+			<img class="m1" src="img/1.jpg" width="65" height="65" alt="照片"/>
+			<img class="m2" src="img/2.jpg" width="100" height="100" alt="照片"/>
+			<img class="m3" src="img/3.jpg" width="120" height="120" alt="照片"/>
+			<img class="m4" src="img/4.jpg" width="90" height="90" alt="照片"/>
+			<img class="m5" src="img/5.jpg" width="65" height="65" alt="照片"/>
+		</div>
+		<div class="but">
+			<div class="pic"><img src="img/1.jpg" width="90" /></div>
+			<div class="text">大鱼—周深</div>
+			<div class="dj">
+				<a class="prev" href="javascript:void(0);"></a>
+				<a class="play" href="javascript:void(0);"></a>
+				<a class="next" href="javascript:void(0);"></a>
+			</div>
+			<div class="close"></div>
+		</div>
+		<audio src="mp3/1.mp3" class="mymusic"></audio>
+		
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js" ></script>
+		<script>
+		    var musicSrc=["mp3/1.mp3","mp3/2.mp3","mp3/3.mp3","mp3/4.mp3","mp3/5.mp3"]; //存放音乐路径
+		    var imgSrc=["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg","img/5.jpg"]; //存放图片路径
+		    var musicTitle=["大鱼-周深","当你老了","从此以后-吴亦凡","等你的季节","星月神话"]; //存放音乐标题
+		    var _index=0;//播放第几首音乐
+		    var k=0; //点击播放
+			//拿到音频对象
+			var audio=$(".mymusic").get(0);//将jquery对象转换为js原生对象
+			$(".nav_pic img").click(function(){				
+				_index=$(this).index();  //获取当前序列 保存在_index中
+				autoplay();
+			})
+			function autoplay(){
+				audio.src = musicSrc[_index];
+				$(".but .pic img").attr("src",imgSrc[_index]);
+				$(".but .text").text(musicTitle[_index]);
+				audio.play();
+				$(".but .dj a.play").addClass("pause");
+			}
+			//点击按钮播放
+			$(".but .dj .play").click(function(){
+				if(k==0){
+					audio.play();
+					$(".but .dj a.play").addClass("pause");
+					k=1;
+				}else if(k==1){
+					audio.pause();
+					$(".but .dj a.play").removeClass("pause");
+					k=0;
+				}
+			})
+			//点击下一首
+			$(".but .dj .next").click(function(){
+				_index++;
+				if(_index>4){
+					_index=0;
+				}
+				autoplay();
+			})
+			//点击上一首
+			$(".but .dj .prev").click(function(){
+				_index--;
+				if(_index<0){
+					_index=4;
+				}
+				autoplay();
+			})
+		</script>
+	</body>
+</html>
